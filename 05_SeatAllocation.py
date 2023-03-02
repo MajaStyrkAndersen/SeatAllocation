@@ -6,42 +6,35 @@ class Party:
         self.id = id                   
         self.votes = votes                  
         self.seats = 0
-        self.priority = votes // 1             
+        self.priority = votes / 1.0             
     
     def addSeats(self):
         self.seats += 1
-        self.priority = self.votes // (self.seats + 1)
+        self.priority = self.votes / (self.seats + 1.0)
 
     def __lt__(self, other):
         return self.priority < other.priority
 
-    def __repr__(self):
-        return 'party'
-
 class main():
-    
-    nParties = readInt()
-    mSeatsAvailable = readInt()
+    n_parties = readInt()
+    m_seats = readInt()
 
-    priorityQueue = MaxPQ(mSeatsAvailable)
+    priorityQueue = MaxPQ()
     parties = []
 
-    for i in range(nParties):
-        priorityQueue.insert(Party(i, readInt())) 
-        parties.append(i)
+    for i in range(n_parties):
+        p = Party(i, readInt())
+        priorityQueue.insert(p) 
+        parties.append(p)
 
-    for i in range(mSeatsAvailable):
+    for i in range(m_seats):
         maxPriority = priorityQueue.del_max()
-        Party.addSeats(maxPriority)
+        maxPriority.addSeats()
+        #print(maxPriority.priority, maxPriority.id)
         priorityQueue.insert(maxPriority)
 
-        mSeatsAvailable -= 1
-        
     for i in parties:
-        print('Number of seats: ')
-        print(i)
-
-
+        print(i.seats)
 
 if __name__ == "__main__":
     main()
